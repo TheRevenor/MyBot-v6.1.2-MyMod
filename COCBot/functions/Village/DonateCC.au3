@@ -40,21 +40,27 @@ Func DonateCC($Check = False)
 	Global $bSkipDonTroops = False, $bSkipDonSpells = False
 
 	If $bDonate = False Or $bDonationEnabled = False Then
-		;DonateStats by CDudz ====================================
-		If GuiCtrlRead($chkLimitDStats) = $GUI_CHECKED And GuiCtrlRead($lblCurDonate) < GuiCtrlRead($iLimitDStats) Then
-			SetLog("Donations re-activated!", $COLOR_PURPLE)
-			$bDonationEnabled = True
-		Else
-			If GuiCtrlRead($chkLimitDStats) = $GUI_CHECKED And GuiCtrlRead($lblCurDonate) > GuiCtrlRead($iLimitDStats) Then
-				SetLog("Donations de-activated! Donate maximum has reached!", $COLOR_PURPLE)
+		;DonateStats by CDudz ==========================================================
+		If $debugSetlog = 1 Then SetLog("Current Donation=" & GuiCtrlRead($lblCurDonate) & " Donation Limit=" & GuiCtrlRead($iLimitDStats), $COLOR_PURPLE)
+		If GuiCtrlRead($chkLimitDStats) = $GUI_CHECKED Then
+			If Int(GuiCtrlRead($lblCurDonate)) < Int(GuiCtrlRead($iLimitDStats)) Then
+				SetLog("Donations re-activated!", $COLOR_PURPLE)
+				$bDonationEnabled = True
+			ElseIf Int(GuiCtrlRead($lblCurDonate)) > Int(GuiCtrlRead($iLimitDStats)) Then
+				SetLog("Donation Disabled, Current Donation= " & GuiCtrlRead($lblCurDonate) & " > Donation Limit= " & GuiCtrlRead($iLimitDStats), $COLOR_ORANGE)
+				Return
 			EndIf
+		Else
 			If $debugsetlog = 1 Then Setlog("Donate Clan Castle troops skip", $COLOR_PURPLE)
 			Return ; exit func if no donate checkmarks
 		EndIf
-	ElseIf $bDonationEnabled = True And GuiCtrlRead($chkLimitDStats) = $GUI_CHECKED And GuiCtrlRead($lblCurDonate) > GuiCtrlRead($iLimitDStats) Then
-		$bDonationEnabled = False
-		SetLog("Donations de-activated! Donate maximum has reached!", $COLOR_PURPLE)
-		Return
+	ElseIf $bDonationEnabled = True And GuiCtrlRead($chkLimitDStats) = $GUI_CHECKED Then
+		If $debugSetlog = 1 Then SetLog("Current Donation=" & GuiCtrlRead($lblCurDonate) & " Donation Limit=" & GuiCtrlRead($iLimitDStats), $COLOR_PURPLE)
+		If Int(GuiCtrlRead($lblCurDonate)) > Int(GuiCtrlRead($iLimitDStats)) Then
+			$bDonationEnabled = False
+			SetLog("Donations de-activated! Donate maximum has reached!", $COLOR_PURPLE)
+			Return
+		EndIf
 	EndIf
 
 	Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
@@ -681,7 +687,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 		If $iSearch <> -1 Then
 			Local $GetLastValue = _GUICtrlListView_GetItemText($lvDonatedTroops, 0, $TroopCol)
 			_GUICtrlListView_SetItem($lvDonatedTroops, $DonatedValue + $GetLastValue, 0, $TroopCol)
-			SetLog("Totals Donation Updated: " & $DonatedValue + $GetLastValue & " Troops", $COLOR_BLUE)
+			SetLog("Totals Donation Updated: " & $DonatedValue + $GetLastValue & " Troops Or Spell", $COLOR_BLUE)
 		Else
 			SetLog("DonateStats: There were errors, donated '" & NameOfTroop($Type, 1) & "' counts/totals skipped.", $COLOR_RED)
 		EndIf
@@ -693,7 +699,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 		For $x = 1 To $aResult[0]
 			$CurDonated += $aResult[$x]
 		Next
-		SetLog("Total Donations:" & $CurDonated)
+		SetLog("Total Donations: " & $CurDonated)
 		GUICtrlSetData($lblCurDonate, $CurDonated)
 
 	EndIf

@@ -529,7 +529,7 @@ $hGUI_STATS_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,40,"Attacks"))
 	; MOD Smart Zap
 	$x = $xStart
 	$y = $yStart + 270
-	$grpStatsSZ = GUICtrlCreateGroup("Smart Zap Attack", $x - 20, $y - 20, 111, 55)
+	$grpStatsSZ = GUICtrlCreateGroup("SmZap && ExZap", $x - 20, $y - 20, 111, 55)
 			GUICtrlCreateIcon($pIconLib, $eIcnLightSpell, $x - 15, $y - 4, 16, 16)
 			GUICtrlCreateLabel("Zap" & ":", $x +3, $y - 2, -1, 17)
 			$lblLightningUsedStat = GUICtrlCreateLabel("0", $x + 2, $y - 2, 80, 17, $SS_RIGHT)

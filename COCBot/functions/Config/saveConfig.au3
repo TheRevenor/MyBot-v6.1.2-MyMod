@@ -1729,12 +1729,25 @@ Func saveConfig() ;Saves the controls settings to the config
 	;atk their king
 	;attk their queen
 
+	; Don't Barack Mode ==========================================================================
+	If GUICtrlRead($chkDontRemove) = $GUI_CHECKED Then
+		IniWrite($config, "troop", "DontRemove", 1)
+	Else
+		IniWrite($config, "troop", "DontRemove", 0)
+	EndIf
+	
+	If GUICtrlRead($chkBarrackSpell) = $GUI_CHECKED Then
+		IniWrite($config, "Spells", "BarrackSpell", 1)
+	Else
+		IniWrite($config, "Spells", "BarrackSpell", 0)
+	EndIf
+	
 	; Donate Stats ==========================================================================
 	If GUICtrlRead($chkDStats) = $GUI_CHECKED Then
 		IniWrite($config, "donate", "chkDStats", 1)
 	Else
 		IniWrite($config, "donate", "chkDStats", 0)
-	EndIf
+	EndIf	
 	
 	;Donate Settings-------------------------------------------------------------------------
 
@@ -2041,6 +2054,11 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "pushbullet", "AlertPBVillage", $iAlertPBVillage)
 	IniWriteS($config, "pushbullet", "AlertPBLastAttack", $iLastAttackPB)
 	IniWriteS($config, "pushbullet", "AlertPBVBreak", $pTakeAbreak)
+	If GUICtrlRead($chkAlertBuilderIdle) = $GUI_CHECKED Then
+		IniWriteS($config, "pushbullet", "AlertBuilderIdle", "1")
+	Else
+		IniWriteS($config, "pushbullet", "AlertBuilderIdle", "0")
+	EndIf
 
 	IniWriteS($config, "other", "WAOffsetX", $iWAOffsetX)
 	IniWriteS($config, "other", "WAOffsetY", $iWAOffsetY)

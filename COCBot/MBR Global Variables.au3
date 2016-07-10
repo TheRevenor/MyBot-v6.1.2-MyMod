@@ -92,7 +92,7 @@ Global $AndroidAdbScreencapEnabled = True ; Use Android ADB to capture screensho
 Global $AndroidAdbScreencapPngEnabled = False ; Use Android ADB to capture screenshots in PNG format, significantly slower than raw format (not final, captured screenshot resize too slow...)
 Global $AndroidAdbZoomoutEnabled = True ; Use Android ADB zoom-out script
 Global $AndroidAdbClickDragEnabled = True ; Use Android ADB click drag script
-Global $AndroidAdbInputEnabled = True ; Enable Android ADB send text (CC requests), swipe not used as click drag anymore
+Global $AndroidAdbInputEnabled = False ; Enable Android ADB send text (CC requests), swipe not used as click drag anymore
 Global $AndroidAdbInputWordsCharLimit = 0 ; Android ADB send text words (split by space) with this limit of specified characters per command (0 = disabled and entire text is sent at once)
 Global $AndroidAdbClickEnabled = False ; Enable Android ADB mouse click
 Global $AndroidAdbClicksEnabled = False ; (Experimental & Dangerous!) Enable Android KeepClicks() and ReleaseClicks() to fire collected clicks all at once, only available when also $AndroidAdbClick = True
@@ -822,6 +822,10 @@ Global $CurMini = 0, $CurHogs = 0, $CurValk = 0, $CurGole = 0, $CurWitc = 0, $Cu
 Global $T[1] = [97]
 Global $ArmyComp
 
+; Don't Barack Mode =================
+Global $iChkDontRemove, $chkDontRemove
+Global $iChkBarrackSpell, $chkBarrackSpell
+
 ;Spell Settings
 Global $DonPois = 0, $DonEart = 0, $DonHast = 0
 Global $iLightningSpellComp = 0, $iHealSpellComp = 0, $iRageSpellComp = 0, $iJumpSpellComp = 0, $iFreezeSpellComp = 0, $iPoisonSpellComp = 0, $iEarthSpellComp = 0, $iHasteSpellComp = 0
@@ -1488,6 +1492,9 @@ Global $ichkMultyFarming
 Global $iAccount, $OkLoc, $AccountLoc
 Global $iconfirm
 Global $bAccount[6] = ["Main", "Second", "Third", "Fourth", "Fifth", "Sixth"]
+
+; Donate Stats - by Cutidudz
+Global $iLimitDStats = 5000
 
 ; ExtremeZap - by TheRevenor
 Global $ichkExtLightSpell = 1

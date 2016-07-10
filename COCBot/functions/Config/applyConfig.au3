@@ -1538,6 +1538,12 @@ EndIf
 	GUICtrlSetData($PushBulletTokenValue, $PushBulletToken)
 	GUICtrlSetData($OrigPushBullet, $iOrigPushBullet)
 	
+	If $ichkAlertBuilderIdle = 1 Then
+		GUICtrlSetState($chkAlertBuilderIdle, $GUI_CHECKED)
+	ElseIf $ichkAlertBuilderIdle = 0 Then
+		GUICtrlSetState($chkAlertBuilderIdle, $GUI_UNCHECKED)
+	EndIf
+	
 	;Pushbullet Stuff
 	If $VillageStatIncrement = 1 Then
 		GUICtrlSetState($chkVillageStatIncrement, $GUI_CHECKED)
@@ -1687,11 +1693,6 @@ EndIf
 	EndIf
 	chkUnbreakable()
 	
-	If $ichkAlertBuilderIdle = 1 Then
-		GUICtrlSetState($chkAlertBuilderIdle, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkAlertBuilderIdle, $GUI_UNCHECKED)
-	EndIf
 
 	; apply halt&resume-------------------------------------------------------------------
 	If $ichkBotStop = 1 Then
@@ -2540,6 +2541,19 @@ _GUICtrlComboBox_SetCurSel($cmbTHSnipeBeforeLBScript, _GUICtrlComboBox_FindStrin
 	EndIf
 	_GUICtrlComboBox_SetCurSel($cmbTrophyMinProfile, $icmbTrophyMinProfile)
 	GUICtrlSetData($txtMinTrophyAmount, $itxtMinTrophyAmount)
+	
+	; Don't Barack Mode =====================================================================
+	If $iChkDontRemove = 1 Then
+		GUICtrlSetState($chkDontRemove, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkDontRemove, $GUI_UNCHECKED)
+	EndIf
+	
+	If $iChkBarrackSpell = 1 Then
+		GUICtrlSetState($chkBarrackSpell, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkBarrackSpell, $GUI_UNCHECKED)
+	EndIf
 
 	; Donate Stats ====================================================================
 	If $ichkDStats = 1 Then
