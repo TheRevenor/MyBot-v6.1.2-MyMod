@@ -34,30 +34,29 @@ Func Collect()
 
 	SetLog("Collecting Resources", $COLOR_BLUE)
 	If _Sleep($iDelayCollect2) Then Return
-	
+
 	; Collect function to Parallel Search , will run all pictures inside the directory
 	Local $directory = @ScriptDir & "\images\Resources\Collect"
 	; Setup arrays, including default return values for $return
 	Local $Filename = ""
 	Local $CollectXY
-	
+	Local $aTimes[5] = [1, 2, 5, 7, 9]
+
 	Local $aResult = returnMultipleMatchesOwnVillage($directory)
 	If UBound($aResult) > 1 Then
 		For $i = 1 To UBound($aResult) - 1
 			$Filename = $aResult[$i][1] ; Filename
 			$CollectXY = $aResult[$i][5] ; Coords
-			If IsMainPage() Then
-				If IsArray($CollectXY) Then
-					For $t = 0 To UBound($CollectXY) - 1 ; each filename can have several positions
-						If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CollectXY[$t][0] & "," & $CollectXY[$t][1] & ")", $COLOR_GREEN)
-						;If IsMainPage() Then Click($CollectXY[$t][0], $CollectXY[$t][1], 1, 0, "#0430")
-						Click($CollectXY[$t][0], $CollectXY[$t][1], 1, 0, "#0430")
-						If _Sleep($iDelayCollect2) Then Return
-					Next
-				EndIf 
+			If IsArray($CollectXY) Then
+				For $t = 0 To UBound($CollectXY) - 1 ; each filename can have several positions
+					If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CollectXY[$t][0] & "," & $CollectXY[$t][1] & ")", $COLOR_GREEN)
+					If IsMainPage() Then Click($CollectXY[$t][0], $CollectXY[$t][1], 1, 0, "#0430")
+					; Random Sleep from 100ms to 900ms
+					If _Sleep($iDelayCollect1 * $aTimes[Random(0, 4, 1)]) Then Return
+				Next
 			EndIf
-		Next 
-	EndIf 
+		Next
+	EndIf
 
 	If _Sleep($iDelayCollect3) Then Return
 	checkMainScreen(False) ; check if errors during function

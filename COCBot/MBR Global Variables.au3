@@ -1452,6 +1452,14 @@ Global $chkMakeIMGCSV
 ; Splash Variables - mikemikemikecoc
  Global $hSplash, $hSplashProgress, $lSplashStatus, $lSplashTitle, $iTotalSteps = 11, $iCurrentStep = 0
 
+; Stats Top Loot
+Global $myHourlyStatsGold = ""
+Global $myHourlyStatsElixir = ""
+Global $myHourlyStatsDark = ""
+Global $topgoldloot = 0
+Global $topelixirloot = 0
+Global $topdarkloot = 0
+ 
 ; TH Snipe Before Attack
 Global $THSnipeBeforeDBEnable = 0 , $THSnipeBeforeLBEnable = 0
 Global $THSnipeBeforeDBTiles = 0 , $THSnipeBeforeLBTiles = 0
@@ -1468,6 +1476,7 @@ Global $CloseCoCGame = 1
 Global $RandomCoCOpen = 0
 Global $RandomCloseTraining = 0
 Global $RandomCloseTraining2 = 0
+Global $TempsAdditionnel = 0
 
 ; Sleep at night variables
 Global $ichkCloseNight = 1

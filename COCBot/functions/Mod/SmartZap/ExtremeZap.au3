@@ -14,7 +14,8 @@
 ; ===============================================================================================================================
 
 Func ExtremeZap()
-	Local $oldSearchDark = 0, $skippedZap = True, $performedZap = False
+	;Local $oldSearchDark = 0, $skippedZap = True, $performedZap = False
+	Local $searchDark, $oldSearchDark = 0, $numSpells, $skippedZap = True, $performedZap = False, $dropPoint
 
 	; If ExtremeZap is not checked, exit.
 	If $ichkExtLightSpell <> 1 Then Return $performedZap
@@ -83,7 +84,6 @@ Func ExtremeZap()
 			SetLog("ExtremeZap Drop L.Spell For All Dark Elixir Drill.", $COLOR_FUCHSIA)
 			zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
 
-			$numSpells -= 1
 			$performedZap = True
 			$skippedZap = False
 
@@ -94,7 +94,7 @@ Func ExtremeZap()
 
 		; Get the DE Value after ExtremeZap has performed its actions.
 		$searchDark = getDarkElixir()
-
+		
 		; No Dark Elixir Left
 		If Not $searchDark Or $searchDark = 0 Then
 			SetLog("No Dark Elixir so lets just exit!", $COLOR_FUCHSIA)
@@ -105,6 +105,7 @@ Func ExtremeZap()
 		If $skippedZap = False Then
 			$strikeGain = $oldSearchDark - $searchDark
 			$numLSpellsUsed += 1
+			$numSpells -= 1
 		EndIf
 
 			If $strikeGain = 1 Then
@@ -127,7 +128,6 @@ Func ExtremeZap()
 
 		; Test current drill locations to check if it still exists (within error)
 		; AND get total theoretical amount in drills to compare against available amount
-		ZoomOut()
 		$aDrills = drillSearch()
 
 		If $aDarkDrills[0][0] <> -1 Then
