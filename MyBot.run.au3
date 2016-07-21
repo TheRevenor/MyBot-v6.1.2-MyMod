@@ -49,7 +49,7 @@ EndIf
 
 Global $sGitHubModOwner = "TheRevenor"
 Global $sGitHubModRepo = "MyBot-v6.1.4-MyMod"
-Global $sGitHubModLatestReleaseTag = "v1.7"
+Global $sGitHubModLatestReleaseTag = "v1.7.1"
 Global $sModSupportUrl = "https://mybot.run/forums/index.php?/topic/20830-mybot-v6121-mod-therevenor-v10-18-06-2016" ; Website
 
 $sBotVersion = "v6.1.4" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
@@ -114,7 +114,6 @@ $hMutex_MyBot = _Singleton("MyBot.run", 1)
 $OnlyInstance = $hMutex_MyBot <> 0 ; And False
 SetDebugLog("My Bot is " & ($OnlyInstance ? "" : "not ") & "the only running instance")
 
-
 #include "COCBot\MBR Global Variables Troops.au3"
 #include "COCBot\MBR GUI Design.au3"
 #include "COCBot\MBR GUI Control.au3"
@@ -146,49 +145,6 @@ FileChangeDir($LibDir)
 ;MBRfunctions.dll & debugger
 MBRFunc(True) ; start MBRFunctions dll
 debugMBRFunctions($debugSearchArea, $debugRedArea, $debugOcr) ; set debug levels
-
-#cs
-If $aCmdLine[0] < 2 and $sAndroid = "" Then
-	DetectRunningAndroid()
-	If Not $FoundRunningAndroid Then DetectInstalledAndroid()
-EndIf
-; Update Bot title
-$sBotTitle = $sBotTitleDefault & "(" & ($AndroidInstance <> "" ? $AndroidInstance : $Android) & ")" ; Do not change this. If you do, multiple instances will not work.
-WinSetTitle($frmBot, "", $sBotTitle)
-
-If $bBotLaunchOption_Restart = True Then
-   If CloseRunningBot($sBotTitle) = True Then
-	  ; wait for Mutexes to get disposed
-	  ;Sleep(1000) ; slow systems
-   EndIf
-EndIF
-
-Local $cmdLineHelp = "By using the commandline (or a shortcut) you can start multiple Bots:" & @CRLF & _
-					 "     MyBot.run.exe [ProfileName] [EmulatorName] [InstanceName]" & @CRLF & @CRLF & _
-					 "With the first command line parameter, specify the Profilename (you can create profiles on the Misc tab, if a " & _
-					 "profilename contains a {space}, then enclose the profilename in double quotes). " & _
-					 "With the second, specify the name of the Emulator and with the third, an Android Instance (not for BlueStacks). " & @CRLF & _
-					 "Supported Emulators are MEmu, Droid4X, Nox, BlueStacks2 and BlueStacks." & @CRLF & @CRLF & _
-					 "Examples:" & @CRLF & _
-					 "     MyBot.run.exe MyVillage BlueStacks2" & @CRLF & _
-					 "     MyBot.run.exe ""My Second Village"" MEmu MEmu_1"
-
-; Only check the Title if a specific emulator and/or instance was specified.
-If $aCmdLine[0] > 1 Then
-	$hMutex_BotTitle = _Singleton($sBotTitle, 1)
-	If $hMutex_BotTitle = 0 Then
-		MsgBox(0, $sBotTitle, "My Bot for " & $Android & ($AndroidInstance <> "" ? " (instance " & $AndroidInstance & ")" : "") & " is already running." & @CRLF & @CRLF & $cmdLineHelp)
-		Exit
-	EndIf
-EndIF
-
-$hMutex_Profile = _Singleton(StringReplace($sProfilePath & "\" & $sCurrProfile, "\", "-"), 1)
-If $hMutex_Profile = 0 Then
-   _WinAPI_CloseHandle($hMutex_BotTitle)
-	MsgBox($MB_OK + $MB_ICONINFORMATION, $sBotTitle, "My Bot with Profile " & $sCurrProfile & " is already running in " & $sProfilePath & "\" & $sCurrProfile & "." & @CRLF & @CRLF & $cmdLineHelp)
-	Exit
-EndIf
-#ce
 
 If $FoundRunningAndroid Then
 	SetLog("Found running " & $Android & " " & $AndroidVersion, $COLOR_GREEN)
@@ -307,7 +263,7 @@ EndIf
 			checkMainScreen(False)
 			If $Restart = True Then ContinueLoop
 			If $ichkMultyFarming = 1 Then DetectAccount()
-			If $RequestScreenshot = 1 Then PushMsg("RequestScreenshot")
+			If $RequestScreenshot = 1 Then PushMsgToPushBullet("RequestScreenshot")
 			If _Sleep($iDelayRunBot3) Then Return
 			VillageReport()
 			ProfileSwitch() ; Added for Switch profile
@@ -602,7 +558,7 @@ Func Idle() ;Sequence that runs until Full Army
 		ElseIf $RunState Then
 		checkAndroidTimeLag()
 
-		If $RequestScreenshot = 1 Then PushMsg("RequestScreenshot")
+		If $RequestScreenshot = 1 Then PushMsgToPushBullet("RequestScreenshot")
 		If _Sleep($iDelayIdle1) Then Return
 		If $CommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_GREEN)
 		Local $hTimer = TimerInit()

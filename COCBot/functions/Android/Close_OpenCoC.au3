@@ -122,3 +122,33 @@ Func WaitnOpenCoC($iWaitTime, $bFullRestart = False, $CloseCoC = True)
 	EndIf
 
 EndFunc   ;==>WaitnOpenCoC
+
+Func StartEmulatorCoC($iWaitTime, $bRestart = False)
+	If Not $RunState Then Return
+
+	Local $RunApp = ""
+	Local $sWaitTime = ""
+	Local $iMin, $iSec, $iHour, $iWaitSec
+	WinGetAndroidHandle()
+	$iWaitSec = Round($iWaitTime / 1000)
+	$iHour = Floor(Floor($iWaitSec / 60) / 60)
+	$iMin = Floor(Mod(Floor($iWaitSec / 60), 60))
+	$iSec = Floor(Mod($iWaitSec, 60))
+	If $iHour > 0 Then $sWaitTime &= $iHour & " hours "
+	If $iMin > 0 Then $sWaitTime &= $iMin & " minutes "
+	If $iSec > 0 Then $sWaitTime &= $iSec & " seconds "
+	SetLog("Waiting " & $sWaitTime & "before starting Emulator and CoC", $COLOR_BLUE)
+	If _SleepStatus($iWaitTime) Then Return False ; Wait for server to see log off
+
+	SendAdbCommand("shell am start -n " & $AndroidGamePackage & "/" & $AndroidGameClass)
+	If Not $RunState Then Return
+
+	If $debugSetlog = 1 Then setlog("Emulator and CoC Restarted, Waiting for completion", $COLOR_PURPLE)
+
+	If $bRestart = False Then
+		StartAndroidCoC()
+	Else
+		waitMainScreen()
+	EndIf
+
+EndFunc   ;==>StartEmulatorCoC
