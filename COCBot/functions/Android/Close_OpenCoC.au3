@@ -138,6 +138,8 @@ Func StartEmulatorCoC($iWaitTime, $bRestart = False)
 	If $iMin > 0 Then $sWaitTime &= $iMin & " minutes "
 	If $iSec > 0 Then $sWaitTime &= $iSec & " seconds "
 	SetLog("Waiting " & $sWaitTime & "before starting Emulator and CoC", $COLOR_BLUE)
+	; Pushbullet Msg/Telegram
+	_PushToPushBullet($iOrigPushBullet & " | Remain Time Training..." & "\n" & "Close Emulator..." & "\n" & "Waiting " & $sWaitTime & " Minutes Before Starting Emulator and CoC")
 	If _SleepStatus($iWaitTime) Then Return False ; Wait for server to see log off
 
 	SendAdbCommand("shell am start -n " & $AndroidGamePackage & "/" & $AndroidGameClass)

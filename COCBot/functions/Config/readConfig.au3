@@ -350,7 +350,7 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iCmbSelectTroop[$LB], $config, "attack", "ABSelectTroop", "0")
 		IniReadS($iCmbSelectTroop[$TS], $config, "attack", "TSSelectTroop", "0")
 
-		IniReadS($iChkRedArea[$DB], $config, "attack", "DBSmartAttackRedArea", "1")
+		IniReadS($iChkRedArea[$DB], $config, "attack", "DBSmartAttackRedArea", "0")
 
 		IniReadS($iCmbSmartDeploy[$DB], $config, "attack", "DBSmartAttackDeploy", "0")
 
@@ -726,6 +726,9 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$ichkVersion = IniRead($config, "General", "ChkVersion", "1")
 		;InireadS(xxxx,$config, "attack", "xxxx", "0")
 		;InireadS(xxxx,$config, "attack", "xxxx", "0")
+		
+		; Check Connections - Added by TheRevenor
+		$ichkConnection = IniRead($config, "General", "ChkConnect", "1")
 		
 		; Don't Barack Mode ==========================================================================
 		$iChkDontRemove = IniRead($config, "troop", "DontRemove", "0")

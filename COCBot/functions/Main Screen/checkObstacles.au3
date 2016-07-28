@@ -61,6 +61,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 				If $ichkSinglePBTForced = 1 Then $bGForcePBTUpdate = True
 			Case _CheckPixel($aIsConnectLost, $bNoCapturePixel) ; Connection Lost
 				SetLog("Connection lost, Reloading CoC...", $COLOR_RED)
+				ChckInetCon()
 			Case _CheckPixel($aIsCheckOOS, $bNoCapturePixel) ; Check OoS
 				SetLog("Out of Sync Error, Reloading CoC...", $COLOR_RED)
 			Case _CheckPixel($aIsMaintenance, $bNoCapturePixel) ; Check Maintenance
@@ -123,7 +124,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	If _CheckPixel($aIsMainGrayed, $bNoCapturePixel) Then
 		PureClickP($aAway, 1, 0, "#0133") ;Click away If things are open
 		If _Sleep(1000) Then Return
-		PureClick(354, 435) ;Click Load Button
+		PureClick(354, 435, 1, 0, "Click Cancel") ;Click Cancel Button
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		Return False

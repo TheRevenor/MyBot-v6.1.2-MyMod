@@ -49,7 +49,7 @@ EndIf
 
 Global $sGitHubModOwner = "TheRevenor"
 Global $sGitHubModRepo = "MyBot-v6.1.4-MyMod"
-Global $sGitHubModLatestReleaseTag = "v1.7.1"
+Global $sGitHubModLatestReleaseTag = "v1.7.2"
 Global $sModSupportUrl = "https://mybot.run/forums/index.php?/topic/20830-mybot-v6121-mod-therevenor-v10-18-06-2016" ; Website
 
 $sBotVersion = "v6.1.4" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
@@ -262,7 +262,7 @@ EndIf
 			If _Sleep($iDelayRunBot2) Then Return
 			checkMainScreen(False)
 			If $Restart = True Then ContinueLoop
-			If $ichkMultyFarming = 1 Then DetectAccount()
+			If $ichkMultyFarming Or $ichkSwitchDonate = 1 Then DetectAccount()
 			If $RequestScreenshot = 1 Then PushMsgToPushBullet("RequestScreenshot")
 			If _Sleep($iDelayRunBot3) Then Return
 			VillageReport()
@@ -291,10 +291,6 @@ EndIf
 			Local $Random1[3] = ['Collect', 'CheckTombs', 'ReArm']
 			While 1
 				If $RunState = False Then Return
-				If $ichkSwitchDonate = 1 Then
-					SetLog("Change Account For Donate")
-					SwitchDonate()
-				EndIf
 				If $Restart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 				If UBound($Random1) > 1 Then
 					$Index = Random(0, UBound($Random1), 1)
@@ -325,6 +321,17 @@ EndIf
 				   EndIf
 				   If checkAndroidTimeLag() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			   WEnd
+			   
+			   If $fullArmy And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+					$IsWaitingForHeroesSpells = 1
+				ElseIf $fullArmy = False And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+					$IsWaitingForHeroesSpells = 0
+				EndIf
+			   
 			   If $RunState = False Then Return
 			   If $Restart = True Then ContinueLoop
 			   If $iUnbreakableMode >= 1 Then
@@ -609,6 +616,17 @@ Func Idle() ;Sequence that runs until Full Army
 		$iCollectCounter = $iCollectCounter + 1
 		If $CommandStop = -1 Then
 			Train()
+			
+			If $fullArmy And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+					GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+					GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+				$IsWaitingForHeroesSpells = 1
+			ElseIf $fullArmy = False And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+					GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+					GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+				$IsWaitingForHeroesSpells = 0
+			EndIf
+			
 			checkRemainingTraining()
 				If $Restart = True Then ExitLoop
 				If _Sleep($iDelayIdle1) Then ExitLoop
@@ -618,6 +636,17 @@ Func Idle() ;Sequence that runs until Full Army
 		If $CommandStop = 0 And $bTrainEnabled = True Then
 			If Not ($fullArmy) Then
 				Train()
+				
+				If $fullArmy And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+					$IsWaitingForHeroesSpells = 1
+				ElseIf $fullArmy = False And ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+					$IsWaitingForHeroesSpells = 0
+				EndIf
+				
 					If $Restart = True Then ExitLoop
 					If _Sleep($iDelayIdle1) Then ExitLoop
 					checkMainScreen(False)

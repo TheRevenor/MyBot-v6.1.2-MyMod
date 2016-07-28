@@ -524,6 +524,15 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		$ichkDisableSplash = 0
 	EndIf
+	
+	; Check Connections - Added by TheRevenor
+	If GUICtrlRead($chkConnection) = $GUI_CHECKED Then
+		$ichkConnection = 1
+	Else
+		$ichkConnection = 0
+	EndIf
+	IniWriteS($config, "General", "ChkConnect", $ichkConnection)
+	
 	If GUICtrlRead($chkVersion) = $GUI_CHECKED Then
 		$ichkVersion = 1
 	Else
@@ -885,7 +894,7 @@ Func saveConfig() ;Saves the controls settings to the config
 		$iChkRandomspeedatk[$DB] = 0
 	EndIf
 	If GUICtrlRead($chkSmartAttackRedAreaDB) = $GUI_CHECKED Then
-		$iChkRedArea[$DB] = 1
+		$iChkRedArea[$DB] = 0
 	Else
 		$iChkRedArea[$DB] = 0
 	EndIf
@@ -2377,8 +2386,6 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 0)
 	EndIf
 	
-	If $hFile <> -1 Then FileClose($hFile)
-	
 	; mikemikemikecoc - Wait For Spells
 	If GUICtrlRead($chkDBSpellsWait) = $GUI_CHECKED Then
 		IniWriteS($config, "search", "ChkDBSpellsWait", 1)
@@ -2512,5 +2519,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "profiles", "cmbTrophyMinProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMinProfile))
 	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
 
+	If $hFile <> -1 Then FileClose($hFile)
+	
 EndFunc   ;==>saveConfig
 
